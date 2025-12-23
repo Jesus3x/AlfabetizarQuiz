@@ -1,49 +1,59 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>Quiz de Alfabetização</title>
-<link rel="manifest" href="manifest.json" />
-    <link rel="icon" type="image/png" href="icon-192x192.png" />
-    <link rel="apple-touch-icon" href="icon-192x192.png" />
-    <meta name="theme-color" content="#2b7cff" />
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background: #f2f9ff;
-        text-align: center;
-        padding: 20px;
-    }
-    h1 {
-        color: #2b7cff;
-    }
-    .quiz-box {
-        background: white;
-        border-radius: 12px;
-        padding: 20px;
-        max-width: 600px;
-        margin: auto;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-    button {
-        padding: 10px 20px;
-        margin: 8px;
-        font-size: 16px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        background: #2b7cff;
-        color: white;
-    }
-    button:hover {
-        background: #1f5fd1;
-    }
-    .feedback {
-        font-size: 18px;
-        margin-top: 15px;
-    }
-</style>
+    <meta charset="UTF-8">
+    <title>Quiz de Alfabetização</title>
+
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="icon-192x192.png">
+    <link rel="apple-touch-icon" href="icon-192x192.png">
+    <meta name="theme-color" content="#2b7cff">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f9ff;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #2b7cff;
+        }
+
+        .quiz-box {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 600px;
+            margin: auto;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 8px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: #2b7cff;
+            color: white;
+        }
+
+        button:hover {
+            background: #1f5fd1;
+        }
+
+        .feedback {
+            font-size: 18px;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
 </head>
+
 <body>
 
 <h1>📚 Quiz de Alfabetização</h1>
@@ -57,85 +67,91 @@
 </div>
 
 <script>
-const quiz = [
-    {
-        question: "Qual letra começa a palavra BOLA?",
-        answers: ["B", "C", "D"],
-        correct: "B"
-    },
-    {
-        question: "Qual sílaba forma a palavra CA + SA?",
-        answers: ["CASA", "CAMA", "CADA"],
-        correct: "CASA"
-    },
-    {
-        question: "Qual palavra corresponde ao desenho de um GATO?",
-        answers: ["GATO", "PATO", "RATO"],
-        correct: "GATO"
-    },
-    {
-        question: "Complete a frase: O cachorro está ____.",
-        answers: ["correndo", "comer", "azul"],
-        correct: "correndo"
-    },
-    {
-        question: "Qual dessas é uma frase correta?",
-        answers: [
-            "A bola pula.",
-            "Bola a pula.",
-            "Pula bola a."
-        ],
-        correct: "A bola pula."
+    const quiz = [
+        {
+            question: "Qual letra começa a palavra BOLA?",
+            answers: ["B", "C", "D"],
+            correct: "B"
+        },
+        {
+            question: "Qual sílaba forma a palavra CA + SA?",
+            answers: ["CASA", "CAMA", "CADA"],
+            correct: "CASA"
+        },
+        {
+            question: "Qual palavra corresponde ao desenho de um GATO?",
+            answers: ["GATO", "PATO", "RATO"],
+            correct: "GATO"
+        },
+        {
+            question: "Complete a frase: O cachorro está ____.",
+            answers: ["correndo", "comer", "azul"],
+            correct: "correndo"
+        },
+        {
+            question: "Qual dessas é uma frase correta?",
+            answers: [
+                "A bola pula.",
+                "Bola a pula.",
+                "Pula bola a."
+            ],
+            correct: "A bola pula."
+        }
+    ];
+
+    let current = 0;
+
+    function loadQuestion() {
+        document.getElementById("feedback").innerText = "";
+        document.getElementById("question").innerText = quiz[current].question;
+
+        const answersDiv = document.getElementById("answers");
+        answersDiv.innerHTML = "";
+
+        quiz[current].answers.forEach(answer => {
+            const btn = document.createElement("button");
+            btn.innerText = answer;
+            btn.onclick = () => checkAnswer(answer);
+            answersDiv.appendChild(btn);
+        });
     }
-];
 
-let current = 0;
+    function checkAnswer(answer) {
+        const feedback = document.getElementById("feedback");
 
-function loadQuestion() {
-    document.getElementById("feedback").innerText = "";
-    document.getElementById("question").innerText = quiz[current].question;
-    const answersDiv = document.getElementById("answers");
-    answersDiv.innerHTML = "";
-
-    quiz[current].answers.forEach(answer => {
-        const btn = document.createElement("button");
-        btn.innerText = answer;
-        btn.onclick = () => checkAnswer(answer);
-        answersDiv.appendChild(btn);
-    });
-}
-
-function checkAnswer(answer) {
-    if (answer === quiz[current].correct) {
-        document.getElementById("feedback").innerText = "✅ Muito bem!";
-        document.getElementById("feedback").style.color = "green";
-    } else {
-        document.getElementById("feedback").innerText = "❌ Tente novamente!";
-        document.getElementById("feedback").style.color = "red";
+        if (answer === quiz[current].correct) {
+            feedback.innerText = "✅ Muito bem!";
+            feedback.style.color = "green";
+        } else {
+            feedback.innerText = "❌ Tente novamente!";
+            feedback.style.color = "red";
+        }
     }
-}
 
-function nextQuestion() {
-    current++;
-    if (current >= quiz.length) {
-        document.querySelector(".quiz-box").innerHTML =
-            "<h2>🎉 Parabéns!</h2><p>Você concluiu o quiz!</p>";
-    } else {
-        loadQuestion();
+    function nextQuestion() {
+        current++;
 
-
+        if (current >= quiz.length) {
+            document.querySelector(".quiz-box").innerHTML = `
+                <h2>🎉 Parabéns!</h2>
+                <p>Você concluiu o quiz!</p>
+            `;
+        } else {
+            loadQuestion();
+        }
     }
-}
 
-if (‘serviceWorker’ in navigator) {
-    window.addEventListener(‘load’, () => {
-      navigator.serviceWorker.register(‘service-worker.js’)
-        .then(reg => console.log(‘✅ Service Worker registrado’, reg))
-        .catch(err => console.error(‘❌ Erro ao registrar o SW:’, err));
-    });
-            }
+    loadQuestion();
+
+    /* REGISTRO DO SERVICE WORKER (CORRIGIDO) */
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('service-worker.js')
+                .then(reg => console.log('✅ Service Worker registrado', reg))
+                .catch(err => console.error('❌ Erro ao registrar o SW:', err));
+        });
+    }
 </script>
 
 </body>
 </html>
-
